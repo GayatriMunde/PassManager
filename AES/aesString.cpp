@@ -3,101 +3,123 @@
 
 using namespace std;
 
-void display(vector<vector<string>> arr){
-    for (int i = 0; i < 4; i++)
-    {
-        for (int j = 0; j < 4; j++){
+void display(vector<vector<unsigned char>> &arr){
+    for (int i = 0; i < 4; i++){
+        for (int j = 0; j < 4; j++)
             cout << arr[i][j] << " ";
-        }
         cout << endl;
     }
 }
 
-vector<vector<string>> getStateArr(string text){
-    vector<vector<string>> matrix;
-
+void getStateArr(string text, vector<vector<unsigned char>> &matrix){
     int ch = 0;
     for (int i = 0; i < 4; i++)
     {
         if (ch >= 16) ch = i;
-        vector<string> column;
+        vector<unsigned char> column;
         for (int j = 0; j < 4; j++){
-            column.push_back(convertHex(text[ch]));
+            column.push_back(int(text[ch]));
             ch += 4;
         }
         matrix.push_back(column);
     }
-    
-    return matrix;
 }
 
-void subBytes(vector<vector<string>> &stateArr){
-    for (int i = 0; i < 4; i++) {
-        for (int j = 0; j < 4; j++){
-            string val = stateArr[i][j];
-            stateArr[i][j] = getSBoxVal(val[0], val[1]);
+void subBytes(vector<vector<unsigned char>> &stateArr){
+    for (int i = 0; i < 4; i++)
+        for (int j = 0; j < 4; j++)
+            stateArr[i][j] = getSBoxVal(stateArr[i][j]);
+}
+
+void shiftRows(vector<vector<unsigned char>> &stateArr){
+    for(int i=1; i<4; i++){
+        if(i==1)
+            for(int j=2; j>=0; j--)
+                swap(stateArr[i][j], stateArr[i][3]);
+        else if(i==2){
+            swap(stateArr[i][0], stateArr[i][2]);
+            swap(stateArr[i][1], stateArr[i][3]);
+        } else
+            for(int j=1; j<4; j++)
+                swap(stateArr[i][0], stateArr[i][j]);
+    }
+}
+
+void MixColumns(vector<vector<unsigned char>> &stateArr){
+    vector<int> temp = {0,0,0,0};
+
+    for(int i=0; i<4; i++){
+        for(int j=0; j<4; j++){
+            for(int k=0; k<4; k++){
+                if(MD5matrix[j][k] == 3)
+                    temp[j] ^= ((stateArr[k][i] * 2) ^ stateArr[k][i]);
+                else
+                    temp[j] ^= (stateArr[k][i] * MD5matrix[j][k]);
+            }
         }
-	}
-    return;
-}
-
-void shiftRows(vector<vector<string>> &stateArr){
-	string tmp[16];
-
-	tmp[0] = stateArr[0][0];
-	tmp[1] = stateArr[0][1];
-	tmp[2] = stateArr[0][2];
-	tmp[3] = stateArr[0][3];
-	
-	tmp[4] = stateArr[1][1];
-	tmp[5] = stateArr[1][2];
-	tmp[6] = stateArr[1][3];
-	tmp[7] = stateArr[1][0];
-
-	tmp[8] = stateArr[2][2];
-	tmp[9] = stateArr[2][3];
-	tmp[10] = stateArr[2][0];
-	tmp[11] = stateArr[2][1];
-	
-	tmp[12] = stateArr[3][3];
-	tmp[13] = stateArr[3][0];
-	tmp[14] = stateArr[3][1];
-	tmp[15] = stateArr[3][2];
-
-    int z = 0;
-	for (int i = 0; i < 4; i++) {
-		for (int j = 0; j < 4; j++){
-            stateArr[i][j] = tmp[z++];
+        for(int k=0; k<4; k++){
+            stateArr[k][i] = temp[k];
+            temp[k] = 0;
         }
-	}
+    }
 }
 
-void MixColumns(vector<vector<string>> &stateArr){
-    
+void addRoundKey(vector<vector<unsigned char>> &stateArr, vector<vector<unsigned char>> &key){ //First round key
+    for(int i=0; i<4; i++)
+        for(int j=0; j<4; j++)
+            stateArr[i][j] ^= key[i][j];
+}
+
+void keyExpansion(vector<vector<unsigned char>> &stateArr, vector<vector<unsigned char>> &key, int c){
+    vector<vector<unsigned char>> newKey = {{0,0,0,0},{0,0,0,0},{0,0,0,0},{0,0,0,0}};
+    vector<unsigned char> temp;
+    vector<unsigned char> rcon = {rc[c], 0x00, 0x00, 0x00};
+
+    for(int i=1; i<4; i++)
+        temp.push_back(key[i][3]);
+    temp.push_back(key[0][3]);
+
+    for(int i=0; i<4; i++)
+        temp[i] = getSBoxVal(temp[i]);
+        
+    for(int i=0; i<4; i++)
+        newKey[i][0] = key[i][0] ^ temp[i] ^ rcon[i];
+
+    for(int i=1; i<4; i++)
+        for(int j=0; j<4; j++)
+            newKey[j][i] = newKey[j][i-1] ^ key[j][i];
+
+    key = newKey;
+    addRoundKey(stateArr, key);
+}
+
+void aes(string text, string key){
+    vector<vector<unsigned char>> stateArray, keyArray;
+    addRoundKey(stateArray, keyArray);
+    for(int count = 0; count<9; count++){
+        subBytes(stateArray);
+        shiftRows(stateArray);
+        MixColumns(stateArray);
+        keyExpansion(stateArray, keyArray, count);
+    }
+    subBytes(stateArray);
+    shiftRows(stateArray);
+    keyExpansion(stateArray, keyArray, 9);
+    display(stateArray);
 }
 
 int main()
 {
-   string text = "ENCRYPTTHISWORD";
-      
-   if (text.length() % 16 != 0)
+    string text = "ENCRYPTTHISWORD";
+    string key = "thisisthekeyssss";
+    if (text.length() % 16 != 0)
     {
         int rem = 16 - text.length();
         while(rem--){
             text += '-';
         }
     }
-            
-    vector<vector<string>> matrix;
-    matrix = getStateArr(text);
-    display(matrix);
-    cout << endl;
-    subBytes(matrix);
-    display(matrix);
-    cout << endl;
-    shiftRows(matrix);
-    display(matrix);
+    aes(text, key);       
 
     return 0;
-    
 }
