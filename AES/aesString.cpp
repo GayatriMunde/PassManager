@@ -6,7 +6,7 @@ using namespace std;
 void display(vector<vector<unsigned char>> &arr){
     for (int i = 0; i < 4; i++){
         for (int j = 0; j < 4; j++)
-            cout << arr[i][j] << " ";
+            cout << int(arr[i][j]) << " ";
         cout << endl;
     }
 }
@@ -95,6 +95,8 @@ void keyExpansion(vector<vector<unsigned char>> &stateArr, vector<vector<unsigne
 
 void aes(string text, string key){
     vector<vector<unsigned char>> stateArray, keyArray;
+    getStateArr(text, stateArray);
+    getStateArr(key, keyArray);
     addRoundKey(stateArray, keyArray);
     for(int count = 0; count<9; count++){
         subBytes(stateArray);
