@@ -3,15 +3,7 @@
 
 using namespace std;
 
-void display(vector<vector<unsigned char>> &arr){
-    for (int i = 0; i < 4; i++){
-        for (int j = 0; j < 4; j++)
-            cout << int(arr[i][j]) << " ";
-        cout << endl;
-    }
-}
-
-void getStateArr(string text, vector<vector<unsigned char>> &matrix){
+void getMatrix(string text, vector<vector<unsigned char>> &matrix){
     int ch = 0;
     for (int i = 0; i < 4; i++)
     {
@@ -64,39 +56,16 @@ void MixColumns(vector<vector<unsigned char>> &stateArr){
     }
 }
 
-void addRoundKey(vector<vector<unsigned char>> &stateArr, vector<vector<unsigned char>> &key){ //First round key
+void addRoundKey(vector<vector<unsigned char>> &stateArr, int c){
     for(int i=0; i<4; i++)
         for(int j=0; j<4; j++)
-            stateArr[i][j] ^= key[i][j];
-}
-
-void keyExpansion(vector<vector<unsigned char>> &stateArr, vector<vector<unsigned char>> &key, int c){
-    vector<vector<unsigned char>> newKey = {{0,0,0,0},{0,0,0,0},{0,0,0,0},{0,0,0,0}};
-    vector<unsigned char> temp;
-    vector<unsigned char> rcon = {rc[c], 0x00, 0x00, 0x00};
-
-    for(int i=1; i<4; i++)
-        temp.push_back(key[i][3]);
-    temp.push_back(key[0][3]);
-
-    for(int i=0; i<4; i++)
-        temp[i] = getSBoxVal(temp[i]);
-        
-    for(int i=0; i<4; i++)
-        newKey[i][0] = key[i][0] ^ temp[i] ^ rcon[i];
-
-    for(int i=1; i<4; i++)
-        for(int j=0; j<4; j++)
-            newKey[j][i] = newKey[j][i-1] ^ key[j][i];
-
-    key = newKey;
-    addRoundKey(stateArr, key);
+            stateArr[i][j] ^= keys[c][i][j];
 }
 
 void lastRound(vector<vector<unsigned char>> stateArray, vector<vector<unsigned char>> keyArray){
     subBytes(stateArray);
     shiftRows(stateArray);
-    keyExpansion(stateArray, keyArray, 9);
+    addRoundKey(stateArray, 10);
 }
 
 void rounds(vector<vector<unsigned char>> stateArray, vector<vector<unsigned char>> keyArray){
@@ -104,19 +73,23 @@ void rounds(vector<vector<unsigned char>> stateArray, vector<vector<unsigned cha
         subBytes(stateArray);
         shiftRows(stateArray);
         MixColumns(stateArray);
-        keyExpansion(stateArray, keyArray, count);
+        addRoundKey(stateArray, count+1);
     }
     lastRound(stateArray, keyArray);
 }
 
-void aes(string text, string key){
+vector<vector<unsigned char>> aes(string text, string key){
     vector<vector<unsigned char>> stateArray, keyArray;
-    getStateArr(text, stateArray);
-    getStateArr(key, keyArray);
+    getMatrix(text, stateArray);
+    getMatrix(key, keyArray);
 
-    addRoundKey(stateArray, keyArray);
-    rounds(stateArray, keyArray);
+    keyExpansion(keyArray);
+    //addRoundKey(stateArray, 0);
+    //shiftRows(stateArray);
+    subBytes(stateArray);
+    //rounds(stateArray, keyArray);
 
     display(stateArray);
+    return (stateArray);
 }
 

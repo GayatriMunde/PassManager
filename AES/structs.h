@@ -5,10 +5,26 @@
 using namespace std;
 
 vector<unsigned char> rc = {0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80, 0x1B, 0x36};
+vector<vector<unsigned char>> rcon = {{0x01, 0x00, 0x00, 0x00},
+                                      {0x02, 0x00, 0x00, 0x00},
+                                      {0x04, 0x00, 0x00, 0x00},
+                                      {0x08, 0x00, 0x00, 0x00},
+                                      {0x10, 0x00, 0x00, 0x00},
+                                      {0x20, 0x00, 0x00, 0x00},
+                                      {0x40, 0x00, 0x00, 0x00},
+                                      {0x80, 0x00, 0x00, 0x00},
+                                      {0x1B, 0x00, 0x00, 0x00},
+                                      {0x36, 0x00, 0x00, 0x00}};
+map<int, vector<vector<unsigned char>>> keys;
+
 vector<vector<int>> MD5matrix = {{2,3,1,1},
                                  {1,2,3,1},
                                  {1,1,2,3},
                                  {3,1,1,2}};
+vector<vector<int>> invMD5matrix = {{14,11,13,9},
+                                    {9,14,11,13},
+                                    {13,9,14,11},
+                                    {11,13,9,14}};
 
 vector<vector<unsigned char>> SBOX = {
       //0     1    2      3     4    5     6     7      8    9     A      B    C     D     E     F
@@ -73,4 +89,36 @@ unsigned char getInvSBoxVal(unsigned char value){
     return INVSBOX[getIndex(str[0])][getIndex(str[1])];
 }
 
+void keyExpansion(vector<vector<unsigned char>> &key){
+    keys[0] = key;
+    for(int c=0; c<10; c++){
+        vector<vector<unsigned char>> subKey = {{0,0,0,0},{0,0,0,0},{0,0,0,0},{0,0,0,0}};
+        vector<unsigned char> temp;
+
+        for(int i=1; i<4; i++)
+            temp.push_back(keys[c][i][3]);
+        temp.push_back(keys[c][0][3]);
+
+        for(int i=0; i<4; i++)
+            temp[i] = getSBoxVal(temp[i]);
+            
+        for(int i=0; i<4; i++)
+            subKey[i][0] = keys[c][i][0] ^ temp[i] ^ rcon[c][i];
+
+        for(int i=1; i<4; i++)
+            for(int j=0; j<4; j++)
+                subKey[j][i] = subKey[j][i-1] ^ keys[c][j][i];
+        keys[c+1] = subKey;
+    }
+}
+
+void display(vector<vector<unsigned char>> &arr){
+    for (int i = 0; i < 4; i++){
+        for (int j = 0; j < 4; j++){
+            cout << hex << arr[i][j];
+            cout << " ";
+        }
+        cout << endl;
+    }
+}
 #endif
