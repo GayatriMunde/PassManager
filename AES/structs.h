@@ -76,16 +76,20 @@ string convertHex(int value){
     stringstream ss;
     ss << hex << value;
     string res = ss.str();
+    if (res == "0")
+        res += "0";
     return res;
 }
 
 unsigned char getSBoxVal(unsigned char value){
     string str = convertHex(value);
+    //cout<<"During enc value : "<<int(value)<<" hex : "<<str<<" susbstituted : "<<int(SBOX[getIndex(str[0])][getIndex(str[1])])<<endl;
     return SBOX[getIndex(str[0])][getIndex(str[1])];
 }
 
 unsigned char getInvSBoxVal(unsigned char value){
     string str = convertHex(value);
+    //cout<<"During dec value : "<<int(value)<<" hex : "<<str<<" susbstituted : "<<INVSBOX[getIndex(str[0])][getIndex(str[1])]<<endl;
     return INVSBOX[getIndex(str[0])][getIndex(str[1])];
 }
 
@@ -115,8 +119,7 @@ void keyExpansion(vector<vector<unsigned char>> &key){
 void display(vector<vector<unsigned char>> &arr){
     for (int i = 0; i < 4; i++){
         for (int j = 0; j < 4; j++){
-            cout << hex << arr[i][j];
-            cout << " ";
+            cout << arr[i][j] << " ";
         }
         cout << endl;
     }

@@ -84,10 +84,8 @@ vector<vector<unsigned char>> aes(string text, string key){
     getMatrix(key, keyArray);
 
     keyExpansion(keyArray);
-    //addRoundKey(stateArray, 0);
-    //shiftRows(stateArray);
-    subBytes(stateArray);
-    //rounds(stateArray, keyArray);
+    addRoundKey(stateArray, 0);
+    rounds(stateArray, keyArray);
 
     display(stateArray);
     return (stateArray);
