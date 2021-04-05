@@ -17,7 +17,7 @@ string check(string text){
 
 int main()
 {
-    string text = "ENCRYPTTHISWORD";
+    string text = "ENCRYPTIONwith";
     string key = "thisisthekeyssss";
 
     text = check(text);

@@ -76,8 +76,8 @@ string convertHex(int value){
     stringstream ss;
     ss << hex << value;
     string res = ss.str();
-    if (res == "0")
-        res += "0";
+    if (res.length() == 1)
+        res = "0" + res;
     return res;
 }
 
