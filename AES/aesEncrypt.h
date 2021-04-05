@@ -1,5 +1,5 @@
-#include <bits/stdc++.h>
 #include "structs.h"
+#include <bits/stdc++.h>
 
 using namespace std;
 
@@ -32,21 +32,21 @@ void subBytes(vector<vector<unsigned char>> &stateArr){
 }
 
 void shiftRows(vector<vector<unsigned char>> &stateArr){
-    for(int i=1; i<4; i++){
-        if(i==1)
-            for(int j=2; j>=0; j--)
+    for(int i = 1; i < 4; i++){
+        if(i == 1)
+            for(int j = 2; j >= 0; j--)
                 swap(stateArr[i][j], stateArr[i][3]);
-        else if(i==2){
+        else if(i == 2){
             swap(stateArr[i][0], stateArr[i][2]);
             swap(stateArr[i][1], stateArr[i][3]);
         } else
-            for(int j=1; j<4; j++)
+            for(int j = 1; j < 4; j++)
                 swap(stateArr[i][0], stateArr[i][j]);
     }
 }
 
 void MixColumns(vector<vector<unsigned char>> &stateArr){
-    vector<int> temp = {0,0,0,0};
+    vector<int> temp = {0, 0, 0, 0};
 
     for(int i=0; i<4; i++){
         for(int j=0; j<4; j++){
@@ -93,35 +93,30 @@ void keyExpansion(vector<vector<unsigned char>> &stateArr, vector<vector<unsigne
     addRoundKey(stateArr, key);
 }
 
-void aes(string text, string key){
-    vector<vector<unsigned char>> stateArray, keyArray;
-    getStateArr(text, stateArray);
-    getStateArr(key, keyArray);
-    addRoundKey(stateArray, keyArray);
+void lastRound(vector<vector<unsigned char>> stateArray, vector<vector<unsigned char>> keyArray){
+    subBytes(stateArray);
+    shiftRows(stateArray);
+    keyExpansion(stateArray, keyArray, 9);
+}
+
+void rounds(vector<vector<unsigned char>> stateArray, vector<vector<unsigned char>> keyArray){
     for(int count = 0; count<9; count++){
         subBytes(stateArray);
         shiftRows(stateArray);
         MixColumns(stateArray);
         keyExpansion(stateArray, keyArray, count);
     }
-    subBytes(stateArray);
-    shiftRows(stateArray);
-    keyExpansion(stateArray, keyArray, 9);
+    lastRound(stateArray, keyArray);
+}
+
+void aes(string text, string key){
+    vector<vector<unsigned char>> stateArray, keyArray;
+    getStateArr(text, stateArray);
+    getStateArr(key, keyArray);
+
+    addRoundKey(stateArray, keyArray);
+    rounds(stateArray, keyArray);
+
     display(stateArray);
 }
 
-int main()
-{
-    string text = "ENCRYPTTHISWORD";
-    string key = "thisisthekeyssss";
-    if (text.length() % 16 != 0)
-    {
-        int rem = 16 - text.length();
-        while(rem--){
-            text += '-';
-        }
-    }
-    aes(text, key);       
-
-    return 0;
-}
