@@ -58,7 +58,7 @@ void firstRound(vector<vector<unsigned char>> &encryptedMsg){
     invSubBytes(encryptedMsg);
 }
 
-void rounds(vector<vector<unsigned char>> &encryptedMsg){
+void decRounds(vector<vector<unsigned char>> &encryptedMsg){
     for (int i = 9; i > 0; i--){
         invAddRoundKey(encryptedMsg, i);
         invMixColumns(encryptedMsg);
@@ -70,6 +70,6 @@ void rounds(vector<vector<unsigned char>> &encryptedMsg){
 
 void decryptAES(vector<vector<unsigned char>> encryptedMsg){
     firstRound(encryptedMsg);
-    rounds(encryptedMsg); 
+    decRounds(encryptedMsg); 
     display(encryptedMsg);
 }

@@ -62,20 +62,20 @@ void addRoundKey(vector<vector<unsigned char>> &stateArr, int c){
             stateArr[i][j] ^= keys[c][i][j];
 }
 
-void lastRound(vector<vector<unsigned char>> stateArray, vector<vector<unsigned char>> keyArray){
+void lastRound(vector<vector<unsigned char>> &stateArray){
     subBytes(stateArray);
     shiftRows(stateArray);
     addRoundKey(stateArray, 10);
 }
 
-void rounds(vector<vector<unsigned char>> stateArray, vector<vector<unsigned char>> keyArray){
+void rounds(vector<vector<unsigned char>> &stateArray){
     for(int count = 0; count<9; count++){
         subBytes(stateArray);
         shiftRows(stateArray);
         MixColumns(stateArray);
         addRoundKey(stateArray, count+1);
     }
-    lastRound(stateArray, keyArray);
+    lastRound(stateArray);
 }
 
 vector<vector<unsigned char>> aes(string text, string key){
@@ -85,7 +85,7 @@ vector<vector<unsigned char>> aes(string text, string key){
 
     keyExpansion(keyArray);
     addRoundKey(stateArray, 0);
-    rounds(stateArray, keyArray);
+    rounds(stateArray);
 
     display(stateArray);
     return (stateArray);

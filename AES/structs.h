@@ -83,13 +83,11 @@ string convertHex(int value){
 
 unsigned char getSBoxVal(unsigned char value){
     string str = convertHex(value);
-    //cout<<"During enc value : "<<int(value)<<" hex : "<<str<<" susbstituted : "<<int(SBOX[getIndex(str[0])][getIndex(str[1])])<<endl;
     return SBOX[getIndex(str[0])][getIndex(str[1])];
 }
 
 unsigned char getInvSBoxVal(unsigned char value){
     string str = convertHex(value);
-    //cout<<"During dec value : "<<int(value)<<" hex : "<<str<<" susbstituted : "<<INVSBOX[getIndex(str[0])][getIndex(str[1])]<<endl;
     return INVSBOX[getIndex(str[0])][getIndex(str[1])];
 }
 
