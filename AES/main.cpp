@@ -23,8 +23,11 @@ int main()
     text = check(text);
     key = check(key);
 
-    vector<vector<unsigned char>> message = aes(text, key);
-    cout<<endl; 
+    string encMsg = aes(text, key);
+    cout << encMsg << endl;
+
+    vector<vector<unsigned char>> message;
+    getMatrix(encMsg, message);
     cout << decryptAES(message) << endl;
 
     return 0;
