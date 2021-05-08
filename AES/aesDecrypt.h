@@ -68,8 +68,9 @@ void decRounds(vector<vector<unsigned char>> &encryptedMsg){
     invAddRoundKey(encryptedMsg, 0);
 }
 
-void decryptAES(vector<vector<unsigned char>> encryptedMsg){
+string decryptAES(vector<vector<unsigned char>> encryptedMsg){
     firstRound(encryptedMsg);
     decRounds(encryptedMsg); 
     display(encryptedMsg);
+    return toString(encryptedMsg);
 }

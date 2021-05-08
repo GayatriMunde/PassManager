@@ -114,12 +114,24 @@ void keyExpansion(vector<vector<unsigned char>> &key){
     }
 }
 
-void display(vector<vector<unsigned char>> &arr){
+void display(vector<vector<unsigned char>> arr){
     for (int i = 0; i < 4; i++){
         for (int j = 0; j < 4; j++){
             cout << arr[i][j] << " ";
         }
         cout << endl;
     }
+}
+
+string toString(vector<vector<unsigned char>> message){
+    string output = "";
+
+    for (int i = 0; i < message.size(); i++){
+        for(int j = 0; j < 4; j++){
+            output += message[j][i];
+        }
+    }
+
+    return output;
 }
 #endif

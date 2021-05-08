@@ -17,7 +17,7 @@ string check(string text){
 
 int main()
 {
-    string text = "ENCRYPTIONwith";
+    string text = "thisisthekeyssss";
     string key = "thisisthekeyssss";
 
     text = check(text);
@@ -25,7 +25,7 @@ int main()
 
     vector<vector<unsigned char>> message = aes(text, key);
     cout<<endl; 
-    decryptAES(message);
+    cout << decryptAES(message) << endl;
 
     return 0;
 }
