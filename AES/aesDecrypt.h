@@ -1,7 +1,8 @@
+#include "structs.h"
+#ifdef STRUCTS_H
 #ifndef AESDECRYPT_H
 #define AESDECRYPT_H
 
-#include "structs.h"
 #include <vector>
 
 using namespace std;
@@ -77,4 +78,5 @@ string decryptAES(vector<vector<unsigned char>> encryptedMsg){
     //display(encryptedMsg);
     return toString(encryptedMsg);
 }
+#endif
 #endif

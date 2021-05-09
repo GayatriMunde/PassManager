@@ -1269,7 +1269,11 @@ debug/decode.o: ../edai3/decode.cpp ../edai3/decode.h \
 		C:/Qt/6.0.3/mingw81_64/include/QtCore/QSize \
 		C:/Qt/6.0.3/mingw81_64/include/QtCore/QSizeF \
 		C:/Qt/6.0.3/mingw81_64/include/QtGui/QTransform \
-		ui_decode.h
+		ui_decode.h \
+		C:/Qt/6.0.3/mingw81_64/include/QtWidgets/QMessageBox \
+		C:/Qt/6.0.3/mingw81_64/include/QtWidgets/qmessagebox.h \
+		../AES/aesDecrypt.h \
+		../AES/structs.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug/decode.o ../edai3/decode.cpp
 
 debug/enter_value.o: ../edai3/enter_value.cpp ../edai3/enter_value.h \

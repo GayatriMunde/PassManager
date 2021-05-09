@@ -1,6 +1,8 @@
+#include "structs.h"
+#ifdef STRUCTS_H
 #ifndef AESENCRYPT_H
 #define AESENCRYPT_H
-#include "structs.h"
+
 #include <vector>
 
 using namespace std;
@@ -66,7 +68,7 @@ void rounds(vector<vector<unsigned char>> &stateArray){
     lastRound(stateArray);
 }
 
-string aes(string text, string key){
+vector<vector<unsigned char>> aes(string text, string key){
     vector<vector<unsigned char>> stateArray, keyArray;
     getMatrix(text, stateArray);
     getMatrix(key, keyArray);
@@ -76,6 +78,8 @@ string aes(string text, string key){
     rounds(stateArray);
 
     //display(stateArray);
-    return toString(stateArray);
+    //return toString(stateArray);
+    return stateArray;
 }
+#endif
 #endif

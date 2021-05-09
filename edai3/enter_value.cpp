@@ -5,6 +5,8 @@
 #include <QSqlDriver>
 #include <QSqlError>
 #include <QSqlQuery>
+#include <aesEncrypt.h>
+#include <structs.h>
 
 enter_value::enter_value(QWidget *parent) :
     QDialog(parent),
@@ -19,7 +21,7 @@ enter_value::~enter_value()
 }
 
 void enter_value::on_submitBtn_clicked()
-{/*
+{
     QString website = ui->webText->text();
     QString username = ui->userText->text();
     QString password = ui->passText->text();
@@ -51,7 +53,7 @@ void enter_value::on_submitBtn_clicked()
                 password = QString::fromUtf8(check(password.toStdString(), &a));
                 vector<vector<unsigned char>> message = aes(password.toStdString(),key.toStdString());
                 data = QString::fromUtf8(toString(message));
-                a = LBOX[a];
+                a = NBOX[a];
 
                 query.prepare("INSERT INTO message(Site,Username,Encrypted,Number) VALUES (?,?,?,?)");
                 query.bindValue(0,website);
@@ -66,5 +68,5 @@ void enter_value::on_submitBtn_clicked()
                 QMessageBox::warning(this,"Success","New details added and encrypted!");
             }
         }
-    }*/
+    }
 }
