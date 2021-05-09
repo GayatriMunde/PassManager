@@ -101,7 +101,7 @@ color: rgb(0, 255, 0);</string>
      <string/>
     </property>
     <property name="pixmap">
-     <pixmap>../../Downloads/mfa-login-icon (4).jpg</pixmap>
+     <pixmap>mfa-login-icon (4).jpg</pixmap>
     </property>
     <property name="wordWrap">
      <bool>false</bool>

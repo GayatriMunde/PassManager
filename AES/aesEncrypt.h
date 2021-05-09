@@ -1,21 +1,9 @@
+#ifndef AESENCRYPT_H
+#define AESENCRYPT_H
 #include "structs.h"
-#include <bits/stdc++.h>
+#include <vector>
 
 using namespace std;
-
-void getMatrix(string text, vector<vector<unsigned char>> &matrix){
-    int ch = 0;
-    for (int i = 0; i < 4; i++)
-    {
-        if (ch >= 16) ch = i;
-        vector<unsigned char> column;
-        for (int j = 0; j < 4; j++){
-            column.push_back(int(text[ch]));
-            ch += 4;
-        }
-        matrix.push_back(column);
-    }
-}
 
 void subBytes(vector<vector<unsigned char>> &stateArr){
     for (int i = 0; i < 4; i++)
@@ -90,4 +78,4 @@ string aes(string text, string key){
     //display(stateArray);
     return toString(stateArray);
 }
-
+#endif

@@ -17,7 +17,7 @@ second::~second()
 }
 void second::readDbAndDisplayTable()
 {
-    QString dbPath = "C:/Users/Dell/Desktop/edai/database/mydata.db";
+    QString dbPath = "../mydata.db";
 
     QSqlDatabase dataBase;
     dataBase = QSqlDatabase::addDatabase("QSQLITE","DBConnection");
@@ -25,7 +25,7 @@ void second::readDbAndDisplayTable()
 
     if(!dataBase.open())
     {
-        qDebug() <<"Database not connected" <<dataBase.lastError().text();                                         //sdgesswsdsxgv
+        qDebug() <<"Database not connected" <<dataBase.lastError().text();
         return;
     }
 
@@ -39,26 +39,23 @@ void second::readDbAndDisplayTable()
 
     ui->tableWidget->setColumnCount(9);
     QStringList lables;
-    lables << " " << "website name" << "encoded msg" << "xyz";                     //aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa;
+    lables << "Site name " << "Username" << "Encrypted password";
     ui->tableWidget->setHorizontalHeaderLabels(lables);
 
     int rowCount=0;
     while (query.next()) {
         ui->tableWidget->insertRow(rowCount);
-        QTableWidgetItem *select = new QTableWidgetItem;
         QTableWidgetItem *site = new QTableWidgetItem;
         QTableWidgetItem *encry = new QTableWidgetItem;
         QTableWidgetItem *put = new QTableWidgetItem;
 
-        select->setText(query.value(1).toString());
-        site->setText(query.value(1).toString());
+        site->setText(query.value(0).toString());
         encry->setText(query.value(1).toString());
-        put->setText(query.value(1).toString());
+        put->setText(query.value(2).toString());
 
-        ui->tableWidget->setItem(rowCount,0,select);
-        ui->tableWidget->setItem(rowCount,1,site);
-        ui->tableWidget->setItem(rowCount,2,encry);
-        ui->tableWidget->setItem(rowCount,3,put);
+        ui->tableWidget->setItem(rowCount,0,site);
+        ui->tableWidget->setItem(rowCount,1,encry);
+        ui->tableWidget->setItem(rowCount,2,put);
 
     }
 }

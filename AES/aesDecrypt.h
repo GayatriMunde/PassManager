@@ -1,5 +1,8 @@
+#ifndef AESDECRYPT_H
+#define AESDECRYPT_H
+
 #include "structs.h"
-#include <bits/stdc++.h>
+#include <vector>
 
 using namespace std;
 
@@ -71,6 +74,7 @@ void decRounds(vector<vector<unsigned char>> &encryptedMsg){
 string decryptAES(vector<vector<unsigned char>> encryptedMsg){
     firstRound(encryptedMsg);
     decRounds(encryptedMsg); 
-    display(encryptedMsg);
+    //display(encryptedMsg);
     return toString(encryptedMsg);
 }
+#endif

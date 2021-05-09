@@ -7,6 +7,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    ui->password->setEchoMode(QLineEdit::Password);
 }
 
 MainWindow::~MainWindow()
@@ -21,14 +22,11 @@ void MainWindow::on_login_clicked()
     QString password = ui->password->text();
 
     if(username == "test" && password=="test"){
-        QMessageBox::information(this,"login","Username and Passowd are correct do you want to move to next Window");
+        //QMessageBox::information(this,"login","Username and Passowd are correct do you want to move to next Window");
         hide();
         secbox = new second(this);
         secbox->show();
     }
     else
         QMessageBox::warning(this,"login","username and password not correct");
-
 }
-
-

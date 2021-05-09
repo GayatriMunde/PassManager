@@ -15,6 +15,9 @@ public:
     explicit enter_value(QWidget *parent = nullptr);
     ~enter_value();
 
+private slots:
+    void on_submitBtn_clicked();
+
 private:
     Ui::enter_value *ui;
 };

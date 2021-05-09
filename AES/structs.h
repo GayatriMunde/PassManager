@@ -1,7 +1,11 @@
-#ifndef STRUCTURES_H
-#define STRUCTURES_H
+#ifndef STRUCTS_H
+#define STRUCTS_H
 
-#include <bits/stdc++.h>
+#include <vector>
+#include <map>
+#include <string>
+#include <iostream>
+#include <sstream>
 using namespace std;
 
 vector<unsigned char> rc = {0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80, 0x1B, 0x36};
@@ -64,6 +68,33 @@ vector<vector<unsigned char>> INVSBOX = {
 	{0xA0, 0xE0, 0x3B, 0x4D, 0xAE, 0x2A, 0xF5, 0xB0, 0xC8, 0xEB, 0xBB, 0x3C, 0x83, 0x53, 0x99, 0x61},
 	{0x17, 0x2B, 0x04, 0x7E, 0xBA, 0x77, 0xD6, 0x26, 0xE1, 0x69, 0x14, 0x63, 0x55, 0x21, 0x0C, 0x7D}
 };
+
+map<int, int> LBOX {{0,737},{1,172},{2,428},{3,442},{4,792},{5,640},{6,314},{7,820},{8,517},{9,336},{10,760},{11,523},{12,397},{13,286},{14,256},{15,497}};
+
+void getMatrix(string text, vector<vector<unsigned char>> &matrix){
+    int ch = 0;
+    for (int i = 0; i < 4; i++)
+    {
+        if (ch >= 16) ch = i;
+        vector<unsigned char> column;
+        for (int j = 0; j < 4; j++){
+            column.push_back(int(text[ch]));
+            ch += 4;
+        }
+        matrix.push_back(column);
+    }
+}
+
+string check(string text, int *count){
+    if (text.length() <= 16){
+        int rem = 16 - text.length();
+        *count = rem;
+        while(rem--){
+            text += '-';
+        }
+    }
+    return text;
+}
 
 int getIndex(char m){
     if ('a' <= m && m <= 'f')

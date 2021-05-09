@@ -15,6 +15,9 @@ public:
     explicit decode(QWidget *parent = nullptr);
     ~decode();
 
+private slots:
+    void on_pushButton_clicked();
+
 private:
     Ui::decode *ui;
 };
