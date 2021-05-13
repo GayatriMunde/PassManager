@@ -1,0 +1,10 @@
+debug/decode.o
+debug/enter_value.o
+debug/main.o
+debug/mainwindow.o
+debug/second.o
+debug/structs.o
+debug/moc_decode.o
+debug/moc_enter_value.o
+debug/moc_mainwindow.o
+debug/moc_second.o

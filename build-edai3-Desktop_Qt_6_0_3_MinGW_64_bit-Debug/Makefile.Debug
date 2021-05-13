@@ -1272,6 +1272,16 @@ debug/decode.o: ../edai3/decode.cpp ../edai3/decode.h \
 		ui_decode.h \
 		C:/Qt/6.0.3/mingw81_64/include/QtWidgets/QMessageBox \
 		C:/Qt/6.0.3/mingw81_64/include/QtWidgets/qmessagebox.h \
+		C:/Qt/6.0.3/mingw81_64/include/QtSql/QSqlDatabase \
+		C:/Qt/6.0.3/mingw81_64/include/QtSql/qsqldatabase.h \
+		C:/Qt/6.0.3/mingw81_64/include/QtSql/qtsqlglobal.h \
+		C:/Qt/6.0.3/mingw81_64/include/QtSql/qtsql-config.h \
+		C:/Qt/6.0.3/mingw81_64/include/QtSql/QSqlDriver \
+		C:/Qt/6.0.3/mingw81_64/include/QtSql/qsqldriver.h \
+		C:/Qt/6.0.3/mingw81_64/include/QtSql/QSqlError \
+		C:/Qt/6.0.3/mingw81_64/include/QtSql/qsqlerror.h \
+		C:/Qt/6.0.3/mingw81_64/include/QtSql/QSqlQuery \
+		C:/Qt/6.0.3/mingw81_64/include/QtSql/qsqlquery.h \
 		../AES/aesDecrypt.h \
 		../AES/structs.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug/decode.o ../edai3/decode.cpp

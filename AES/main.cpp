@@ -2,7 +2,7 @@
 #include <iostream>
 #include "aesEncrypt.h"
 #include "aesDecrypt.h"
-#include "structs.cpp"
+#include "structs.h"
 
 using namespace std;
 
@@ -14,9 +14,13 @@ int main()
     text = check(text,&a);
     key = check(key,&a);
 
-    vector<vector<unsigned char>> message = aes(text, key);;
-    //getMatrix(encMsg, message);
-    cout << decryptAES(message) << endl;
+/*     string abc;
+    cin>>abc;
+
+    vector<vector<unsigned char>> message;
+    getMatrix(abc, message); */
+    vector<vector<unsigned char>> message = aes(text, key);
+    cout << decryptAES(message, key) << endl;
 
     return 0;
 }

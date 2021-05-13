@@ -1,0 +1,10 @@
+release/decode.o
+release/enter_value.o
+release/main.o
+release/mainwindow.o
+release/second.o
+release/structs.o
+release/moc_decode.o
+release/moc_enter_value.o
+release/moc_mainwindow.o
+release/moc_second.o

@@ -5,8 +5,8 @@
 #include <QSqlDriver>
 #include <QSqlError>
 #include <QSqlQuery>
-#include <aesEncrypt.h>
-#include <structs.h>
+#include "aesEncrypt.h"
+#include "structs.h"
 
 enter_value::enter_value(QWidget *parent) :
     QDialog(parent),

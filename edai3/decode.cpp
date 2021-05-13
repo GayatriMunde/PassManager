@@ -1,8 +1,12 @@
 #include "decode.h"
 #include "ui_decode.h"
 #include "QMessageBox"
-#include <aesDecrypt.h>
-#include <structs.h>
+#include <QSqlDatabase>
+#include <QSqlDriver>
+#include <QSqlError>
+#include <QSqlQuery>
+#include "aesDecrypt.h"
+#include "structs.h"
 
 decode::decode(QWidget *parent) :
     QDialog(parent),
@@ -25,6 +29,29 @@ void decode::on_pushButton_clicked()
     else{
         vector<vector<unsigned char>> eMsg;
         getMatrix(encryptedMsg.toStdString(), eMsg);
-        ui->dMsgBox->setPlainText(QString::fromUtf8(decryptAES(eMsg)));
+        const QString DRIVER("QSQLITE");
+        if(QSqlDatabase::isDriverAvailable(DRIVER)){
+            QSqlDatabase database = QSqlDatabase::addDatabase(DRIVER);
+            database.setDatabaseName("../mydata.db");
+
+            if(!database.open())
+            {
+                qWarning() << "ERROR: " << database.lastError();
+                return;
+            }
+
+            QSqlQuery query;
+            int a;
+            query.prepare("SELECT password FROM login");
+            if(!query.exec()){
+                qWarning() << "ERROR: " << query.lastError().text();
+                QMessageBox::warning(this,"Error","No User details found!");
+            }else{
+                QString key = query.value(0).toString();
+                key = QString::fromUtf8(check(key.toStdString(), &a));
+                string decrypt = decryptAES(eMsg,key.toStdString());
+                std::cout<<decrypt<<std::endl;
+            }
+        }
     }
 }
