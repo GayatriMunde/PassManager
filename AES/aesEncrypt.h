@@ -77,8 +77,8 @@ vector<vector<unsigned char>> aes(string text, string key){
     addRoundKey(stateArray, 0);
     rounds(stateArray);
 
-    display(stateArray);
-    cout<<toString(stateArray)<<endl;
+    //display(stateArray);
+    //cout<<toString(stateArray)<<endl;
     return stateArray;
 }
 #endif

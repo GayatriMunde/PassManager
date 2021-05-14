@@ -6,6 +6,7 @@
 #include <string>
 #include <iostream>
 #include <sstream>
+#include <bitset>
 
 using namespace std;
 
@@ -158,7 +159,6 @@ inline void display(vector<vector<unsigned char>> arr){
 
 inline string toString(vector<vector<unsigned char>> message){
     string output = "";
-
     for (int i = 0; i < message.size(); i++){
         for(int j = 0; j < 4; j++){
             output += message[j][i];
@@ -167,4 +167,24 @@ inline string toString(vector<vector<unsigned char>> message){
 
     return output;
 }
+
+
+inline string strToHex(vector<vector<unsigned char>> message){
+    stringstream ss;
+
+    for (int i = 0; i < message.size(); i++){
+        for(int j = 0; j < 4; j++){
+            ss << hex << (int)message[i][j];
+        }
+    }
+    string output = ss.str();
+    //cout << output << endl;
+
+    return output;
+}
+
+inline string hexToStr(string message){
+    return " ";
+}
+
 #endif
