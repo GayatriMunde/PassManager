@@ -72,7 +72,8 @@ void decRounds(vector<vector<unsigned char>> &encryptedMsg){
     invAddRoundKey(encryptedMsg, 0);
 }
 
-string decryptAES(vector<vector<unsigned char>> encryptedMsg, string key){
+string decryptAES(string eMsg, string key){
+    vector<vector<unsigned char>> encryptedMsg = hexToStr(eMsg);
     vector<vector<unsigned char>> keyArray;
     getMatrix(key, keyArray);
     keyExpansion(keyArray);

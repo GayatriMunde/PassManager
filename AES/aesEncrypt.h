@@ -68,7 +68,7 @@ void rounds(vector<vector<unsigned char>> &stateArray){
     lastRound(stateArray);
 }
 
-vector<vector<unsigned char>> aes(string text, string key){
+string aes(string text, string key){
     vector<vector<unsigned char>> stateArray, keyArray;
     getMatrix(text, stateArray);
     getMatrix(key, keyArray);
@@ -79,7 +79,7 @@ vector<vector<unsigned char>> aes(string text, string key){
 
     //display(stateArray);
     //cout<<toString(stateArray)<<endl;
-    return stateArray;
+    return strToHex(stateArray);
 }
 #endif
 #endif

@@ -27,8 +27,6 @@ void decode::on_pushButton_clicked()
     if(encryptedMsg == "")
         QMessageBox::warning(this,"Error","Enter encrypted password!");
     else{
-        vector<vector<unsigned char>> eMsg;
-        getMatrix(encryptedMsg.toStdString(), eMsg);
         const QString DRIVER("QSQLITE");
         if(QSqlDatabase::isDriverAvailable(DRIVER)){
             QSqlDatabase database = QSqlDatabase::addDatabase(DRIVER);
@@ -49,7 +47,7 @@ void decode::on_pushButton_clicked()
             }else{
                 QString key = query.value(0).toString();
                 key = QString::fromUtf8(check(key.toStdString(), &a));
-                string decrypt = decryptAES(eMsg,key.toStdString());
+                string decrypt = decryptAES(encryptedMsg.toStdString(),key.toStdString());
                 std::cout<<decrypt<<std::endl;
             }
         }

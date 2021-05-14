@@ -10,8 +10,8 @@
 
 using namespace std;
 
-vector<unsigned char> rc = {0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80, 0x1B, 0x36};
-vector<vector<unsigned char>> rcon = {{0x01, 0x00, 0x00, 0x00},
+inline vector<unsigned char> rc = {0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80, 0x1B, 0x36};
+inline vector<vector<unsigned char>> rcon = {{0x01, 0x00, 0x00, 0x00},
                                       {0x02, 0x00, 0x00, 0x00},
                                       {0x04, 0x00, 0x00, 0x00},
                                       {0x08, 0x00, 0x00, 0x00},
@@ -21,18 +21,18 @@ vector<vector<unsigned char>> rcon = {{0x01, 0x00, 0x00, 0x00},
                                       {0x80, 0x00, 0x00, 0x00},
                                       {0x1B, 0x00, 0x00, 0x00},
                                       {0x36, 0x00, 0x00, 0x00}};
-map<int, vector<vector<unsigned char>>> keys;
+inline map<int, vector<vector<unsigned char>>> keys;
 
-vector<vector<int>> MD5matrix = {{2,3,1,1},
+inline vector<vector<int>> MD5matrix = {{2,3,1,1},
                                  {1,2,3,1},
                                  {1,1,2,3},
                                  {3,1,1,2}};
-vector<vector<int>> invMD5matrix = {{14,11,13,9},
+inline vector<vector<int>> invMD5matrix = {{14,11,13,9},
                                     {9,14,11,13},
                                     {13,9,14,11},
                                     {11,13,9,14}};
 
-vector<vector<unsigned char>> SBOX = {
+inline vector<vector<unsigned char>> SBOX = {
       //0     1    2      3     4    5     6     7      8    9     A      B    C     D     E     F
     {0x63 ,0x7c ,0x77 ,0x7b ,0xf2 ,0x6b ,0x6f ,0xc5 ,0x30 ,0x01 ,0x67 ,0x2b ,0xfe ,0xd7 ,0xab ,0x76},
     {0xca ,0x82 ,0xc9 ,0x7d ,0xfa ,0x59 ,0x47 ,0xf0 ,0xad ,0xd4 ,0xa2 ,0xaf ,0x9c ,0xa4 ,0x72 ,0xc0},
@@ -52,7 +52,7 @@ vector<vector<unsigned char>> SBOX = {
     {0x8c ,0xa1 ,0x89 ,0x0d ,0xbf ,0xe6 ,0x42 ,0x68 ,0x41 ,0x99 ,0x2d ,0x0f ,0xb0 ,0x54 ,0xbb ,0x16}
     };
 
-vector<vector<unsigned char>> INVSBOX = {
+inline vector<vector<unsigned char>> INVSBOX = {
     {0x52, 0x09, 0x6A, 0xD5, 0x30, 0x36, 0xA5, 0x38, 0xBF, 0x40, 0xA3, 0x9E, 0x81, 0xF3, 0xD7, 0xFB},
 	{0x7C, 0xE3, 0x39, 0x82, 0x9B, 0x2F, 0xFF, 0x87, 0x34, 0x8E, 0x43, 0x44, 0xC4, 0xDE, 0xE9, 0xCB},
 	{0x54, 0x7B, 0x94, 0x32, 0xA6, 0xC2, 0x23, 0x3D, 0xEE, 0x4C, 0x95, 0x0B, 0x42, 0xFA, 0xC3, 0x4E},
@@ -71,7 +71,7 @@ vector<vector<unsigned char>> INVSBOX = {
 	{0x17, 0x2B, 0x04, 0x7E, 0xBA, 0x77, 0xD6, 0x26, 0xE1, 0x69, 0x14, 0x63, 0x55, 0x21, 0x0C, 0x7D}
 };
 
-map<int, int> NBOX {{0,737},{1,172},{2,428},{3,442},{4,792},{5,640},{6,314},{7,820},{8,517},{9,336},{10,760},{11,523},{12,397},{13,286},{14,256},{15,497}};
+inline map<int, int> NBOX {{0,737},{1,172},{2,428},{3,442},{4,792},{5,640},{6,314},{7,820},{8,517},{9,336},{10,760},{11,523},{12,397},{13,286},{14,256},{15,497}};
 
 
 inline void getMatrix(string text, vector<vector<unsigned char>> &matrix){
@@ -171,20 +171,40 @@ inline string toString(vector<vector<unsigned char>> message){
 
 inline string strToHex(vector<vector<unsigned char>> message){
     stringstream ss;
+    string output;
 
     for (int i = 0; i < message.size(); i++){
         for(int j = 0; j < 4; j++){
             ss << hex << (int)message[i][j];
+            if (ss.str().length() == 1)
+                output.append("0"+ss.str());
+            else
+                output.append(ss.str());
+            ss.str(string());
+            if(i+1 != message.size() || j+1 != 4)
+                output.append(" ");
         }
     }
-    string output = ss.str();
-    //cout << output << endl;
 
     return output;
 }
 
-inline string hexToStr(string message){
-    return " ";
+inline vector<vector<unsigned char>> hexToStr(string message){
+    istringstream hex_chars_stream(message);
+    vector<vector<unsigned char>> encryptedMsg;
+    vector<unsigned char> temp;
+
+    unsigned int c;
+    for(int i=0; i<4; i++){
+        for(int j=0; j<4; j++){
+            hex_chars_stream >> hex >> c;
+            temp.push_back(c);
+        }
+        encryptedMsg.push_back(temp);
+        temp.clear();
+    }
+    
+    return encryptedMsg;
 }
 
 #endif

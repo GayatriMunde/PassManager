@@ -51,8 +51,7 @@ void enter_value::on_submitBtn_clicked()
                 QString key = query.value(0).toString();
                 key = QString::fromUtf8(check(key.toStdString(), &a));
                 password = QString::fromUtf8(check(password.toStdString(), &a));
-                vector<vector<unsigned char>> message = aes(password.toStdString(),key.toStdString());
-                data = QString::fromUtf8(toString(message));
+                data = QString::fromUtf8(aes(password.toStdString(),key.toStdString()));
                 a = NBOX[a];
 
                 query.prepare("INSERT INTO message(Site,Username,Encrypted,Number) VALUES (?,?,?,?)");
