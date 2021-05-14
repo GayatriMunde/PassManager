@@ -8,7 +8,7 @@ using namespace std;
 
 int main()
 {
-    string text = "ThIsiSpaSswOrd.";
+    string text = "T";
     string key = "thisisthekeyssss";
     int a;
     text = check(text,&a);
@@ -30,7 +30,7 @@ int main()
     string msg = aes(text,key); ///Stroing purpose
     //cout << msg << endl;
     //vector<vector<unsigned char>> decry = hexToStr(msg); //convert hex string to vector format
-    cout << "Decrypted: " << decryptAES(msg,key) << endl;
+    cout << "Decrypted: " << decryptAES(msg,key,497) << endl;
     //getMatrix(, ip);
     //toString(ip);
     //display(ip);

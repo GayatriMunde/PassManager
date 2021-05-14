@@ -157,14 +157,24 @@ inline void display(vector<vector<unsigned char>> arr){
     }
 }
 
-inline string toString(vector<vector<unsigned char>> message){
+inline string toString(vector<vector<unsigned char>> message, int num){
     string output = "";
-    for (int i = 0; i < message.size(); i++){
+    int index;
+    for (int i = 0; i < (int)message.size(); i++){
         for(int j = 0; j < 4; j++){
             output += message[j][i];
         }
     }
 
+    for (auto& it : NBOX) {
+        if (it.second == num) {
+            index = it.first;
+        }
+    }
+
+    while(index--)
+        output.pop_back();
+    cout<<"Output: "<<output<<endl;
     return output;
 }
 
@@ -173,7 +183,7 @@ inline string strToHex(vector<vector<unsigned char>> message){
     stringstream ss;
     string output;
 
-    for (int i = 0; i < message.size(); i++){
+    for (int i = 0; i < (int)message.size(); i++){
         for(int j = 0; j < 4; j++){
             ss << hex << (int)message[i][j];
             if (ss.str().length() == 1)
@@ -181,7 +191,7 @@ inline string strToHex(vector<vector<unsigned char>> message){
             else
                 output.append(ss.str());
             ss.str(string());
-            if(i+1 != message.size() || j+1 != 4)
+            if(i+1 != (int)message.size() || j+1 != 4)
                 output.append(" ");
         }
     }
