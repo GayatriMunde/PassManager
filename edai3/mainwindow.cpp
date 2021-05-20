@@ -21,7 +21,7 @@ void MainWindow::on_login_clicked()
     QString username = ui->username->text();
     QString password = ui->password->text();
 
-    if(username == "test" && password=="test"){
+    if(username == "admin" && password=="admin"){
         //QMessageBox::information(this,"login","Username and Passowd are correct do you want to move to next Window");
         hide();
         secbox = new second(this);

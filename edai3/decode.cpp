@@ -47,7 +47,6 @@ void decode::on_pushButton_clicked()
             }else{
                 QString key = query.value(0).toString();
                 key = QString::fromUtf8(check(key.toStdString(), &a));
-                std::cout<<"Encrypted= "<<encryptedMsg.toStdString()<<std::endl;
                 query.prepare("SELECT Number FROM message WHERE Encrypted=(?)");
                 query.addBindValue(encryptedMsg);
                 if(!query.exec()){
@@ -56,9 +55,7 @@ void decode::on_pushButton_clicked()
                 }else{
                     query.next();
                     int num = query.value(0).toInt();
-                    std::cout<<"Num "<<num<<std::endl;
                     string decrypt = decryptAES(encryptedMsg.toStdString(),key.toStdString(),num);
-                    std::cout<<decrypt<<std::endl;
                     ui->dMsgBox->setPlainText(QString::fromUtf8(decrypt));
                 }
             }

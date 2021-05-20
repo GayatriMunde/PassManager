@@ -174,7 +174,6 @@ inline string toString(vector<vector<unsigned char>> message, int num){
 
     while(index--)
         output.pop_back();
-    cout<<"Output: "<<output<<endl;
     return output;
 }
 
